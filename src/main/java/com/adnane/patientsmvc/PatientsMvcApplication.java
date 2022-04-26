@@ -2,10 +2,13 @@ package com.adnane.patientsmvc;
 
 import com.adnane.patientsmvc.entities.Patient;
 import com.adnane.patientsmvc.repositories.PatientRepository;
+import com.adnane.patientsmvc.sec.service.SecurityService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -16,6 +19,10 @@ public class PatientsMvcApplication {
         SpringApplication.run(PatientsMvcApplication.class, args);
     }
 
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     //@Bean
     CommandLineRunner commandLineRunner(PatientRepository patientRepository) {
         return args -> {
@@ -36,6 +43,24 @@ public class PatientsMvcApplication {
 
 
 
+  //  @Bean
+    CommandLineRunner saveUsers(SecurityService securityService){
+        return args -> {
+          securityService.saveNewUser("Adnane","1234","1234");
+            securityService.saveNewUser("Amine","1234","1234");
+            securityService.saveNewUser("Hassan","1234","1234");
 
+
+           securityService.saveNewRole("USER","");
+           securityService.saveNewRole("ADMIN","");
+
+           securityService.addRoleToUser("Adnane","USER");
+            securityService.addRoleToUser("Adnane","ADMIN");
+            securityService.addRoleToUser("Amine","USER");
+            securityService.addRoleToUser("Hassan","USER");
+
+
+        };
+    }
 
 }
